@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef} from "react";
 import { toPng } from "https://esm.sh/html-to-image@1.11.11";
 
 const STYLES = `

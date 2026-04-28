@@ -700,7 +700,7 @@ export default function WelcomeEmailer() {
                 <div className="we-email-greeting">Hey team, say hello 👋</div>
                 <div className="we-email-intro">
                   We're over the moon to welcome <strong>{nm}</strong> to the <strong>{team}</strong> team!
-                  Joining us at an exciting time, We are thrilled about the experience and fresh perspective {firstName} adds to our group.
+                  Joining us at an exciting time, we are thrilled about the experience and fresh perspective {firstName} adds to our group.
                   Get ready ! something amazing is about to happen.
                 </div>
 

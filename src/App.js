@@ -1228,6 +1228,7 @@ export default function WelcomeEmailer() {
                   <option value="Digital CX">Digital CX</option>
                   <option value="Infra & Cyber Security">Infra &amp; Cyber Security</option>
                   <option value="Production Support">Production Support</option>
+                  <option value="Data Engineering">Data Engineering</option>
                 </select>
               </div>
             </div>

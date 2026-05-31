@@ -1,8 +1,11 @@
 import { useState, useRef} from "react";
 import { toPng } from "https://esm.sh/html-to-image@1.11.11";
 
-const STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Sora:wght@300;400;500;600;700&display=swap');
+/* ═══════════════════════════════════════════════════════
+   SHARED BASE STYLES  (app shell, form panel, topbar)
+═══════════════════════════════════════════════════════ */
+const BASE_STYLES = `
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Sora:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -98,9 +101,46 @@ const STYLES = `
     font-size: 12px;
     font-weight: 300;
     color: #4E4E68;
-    margin-bottom: 26px;
+    margin-bottom: 20px;
     letter-spacing: 0.02em;
   }
+
+  /* ── DESIGN SELECTOR ── */
+  .we-design-selector-wrap {
+    margin-bottom: 22px;
+  }
+  .we-design-selector-label {
+    display: block;
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: #5A5A78;
+    margin-bottom: 7px;
+  }
+  .we-design-select {
+    width: 100%;
+    background: rgba(196,163,90,0.045);
+    border: 1px solid rgba(196,163,90,0.28);
+    border-radius: 10px;
+    padding: 10px 36px 10px 14px;
+    font-size: 13px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 400;
+    color: #EEE9E0;
+    outline: none;
+    transition: border-color 0.22s, background 0.22s, box-shadow 0.22s;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C4A35A' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+  }
+  .we-design-select:focus {
+    border-color: rgba(196,163,90,0.55);
+    background-color: rgba(196,163,90,0.06);
+    box-shadow: 0 0 0 3px rgba(196,163,90,0.09);
+  }
+  .we-design-select option { background: #0F0F1C; color: #EEE9E0; }
 
   /* photo upload */
   .we-photo-zone {
@@ -245,7 +285,7 @@ const STYLES = `
     display: flex; align-items: center; gap: 8px;
   }
 
-  /* ── EMAIL CARD ── */
+  /* ── EMAIL CARD WRAPPER ── */
   .we-email {
     max-width: 540px;
     margin: 0 auto;
@@ -268,16 +308,21 @@ const STYLES = `
     padding: 4px 10px; font-size: 10px; color: #3A3A58; text-align: center;
     font-family: 'Sora', sans-serif;
   }
+`;
 
+/* ═══════════════════════════════════════════════════════
+   DESIGN 1 — Classic Gold (original)
+═══════════════════════════════════════════════════════ */
+const STYLES_D1 = `
   /* email hero */
-  .we-email-hero {
+  .d1 .we-email-hero {
     background: #0C0C1A;
     padding: 36px 36px 0;
     text-align: center;
     position: relative;
     overflow: hidden;
   }
-  .we-email-hero::before {
+  .d1 .we-email-hero::before {
     content: '';
     position: absolute; inset: 0;
     background:
@@ -285,7 +330,7 @@ const STYLES = `
       radial-gradient(ellipse 60% 50% at 75% 25%, rgba(100,80,190,0.07) 0%, transparent 55%);
     pointer-events: none;
   }
-  .we-email-eyebrow {
+  .d1 .we-email-eyebrow {
     position: relative;
     display: flex; align-items: center; gap: 8px;
     width: fit-content; margin: 0 auto 22px;
@@ -294,8 +339,8 @@ const STYLES = `
     border: 1px solid rgba(196,163,90,0.25);
     padding: 5px 14px; border-radius: 20px;
   }
-  .we-email-eyebrow-star { font-size: 8px; }
-  .we-photo-ring {
+  .d1 .we-email-eyebrow-star { font-size: 8px; }
+  .d1 .we-photo-ring {
     width: 110px; height: 110px;
     border-radius: 50%;
     background: conic-gradient(#C4A35A 0%, #8B6FBE 40%, #C4A35A 70%, #E8C97D 100%);
@@ -303,30 +348,30 @@ const STYLES = `
     display: inline-block;
     position: relative;
   }
-  .we-photo-inner {
+  .d1 .we-photo-inner {
     width: 100%; height: 100%;
     border-radius: 50%;
     overflow: hidden;
     background: #14142A;
     display: flex; align-items: center; justify-content: center;
   }
-  .we-photo-inner img { width:100%; height:100%; object-fit:cover; }
-  .we-photo-initials {
+  .d1 .we-photo-inner img { width:100%; height:100%; object-fit:cover; }
+  .d1 .we-photo-initials {
     font-family: 'Cormorant Garamond', serif;
     font-size: 36px; font-weight: 600; color: #C4A35A;
   }
-  .we-email-name {
+  .d1 .we-email-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 34px; font-weight: 600; color: #EEE9E0;
     margin-top: 16px; margin-bottom: 6px;
     line-height: 1.15; position: relative;
   }
-  .we-email-desig {
+  .d1 .we-email-desig {
     font-size: 12px; font-weight: 500; color: #C4A35A;
     letter-spacing: 0.08em; margin-bottom: 10px;
     position: relative; text-transform: uppercase;
   }
-  .we-email-team {
+  .d1 .we-email-team {
     display: inline-flex; align-items: center; gap: 6px;
     font-size: 11px; color: #7A6E52;
     border: 1px solid rgba(196,163,90,0.15);
@@ -335,115 +380,445 @@ const STYLES = `
     margin-bottom: 30px; position: relative;
     letter-spacing: 0.04em;
   }
-  .we-wave {
+  .d1 .we-wave {
     display: block; width: 100%;
     line-height: 0; position: relative; margin-bottom: -1px;
   }
 
   /* email body */
-  .we-email-body { background: #F4F1EA; padding: 30px 34px 24px; }
-  .we-email-greeting {
+  .d1 .we-email-body { background: #F4F1EA; padding: 30px 34px 24px; }
+  .d1 .we-email-greeting {
     font-family: 'Cormorant Garamond', serif;
     font-size: 22px; font-weight: 600; color: #18182A;
     margin-bottom: 10px; line-height: 1.3;
   }
-  .we-email-intro {
+  .d1 .we-email-intro {
     font-size: 13px; color: #5A5668; line-height: 1.85;
     margin-bottom: 22px; font-weight: 300;
   }
-  .we-email-intro strong { color: #18182A; font-weight: 500; }
+  .d1 .we-email-intro strong { color: #18182A; font-weight: 500; }
 
-  .we-chips {
+  .d1 .we-chips {
     display: grid; grid-template-columns: 1fr 1fr 1fr;
     gap: 10px; margin-bottom: 20px;
   }
-  .we-chip {
+  .d1 .we-chip {
     background: white;
     border-radius: 12px; padding: 12px 10px;
     text-align: center;
     box-shadow: 0 1px 8px rgba(0,0,0,0.07);
   }
-  .we-chip-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: #9B98A8; margin-bottom: 4px; }
-  .we-chip-val { font-size: 11px; font-weight: 600; color: #18182A; line-height: 1.3; }
+  .d1 .we-chip-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: #9B98A8; margin-bottom: 4px; }
+  .d1 .we-chip-val { font-size: 11px; font-weight: 600; color: #18182A; line-height: 1.3; }
 
-  .we-icard {
+  .d1 .we-icard {
     background: white;
     border-radius: 12px; padding: 16px 18px;
     margin-bottom: 12px;
     border-left: 2.5px solid #C4A35A;
     box-shadow: 0 1px 10px rgba(0,0,0,0.06);
   }
-  .we-icard-lbl {
+  .d1 .we-icard-lbl {
     font-size: 9px; font-weight: 700; text-transform: uppercase;
     letter-spacing: 0.12em; color: #C4A35A; margin-bottom: 5px;
     display: flex; align-items: center; gap: 6px;
   }
-  .we-icard-val { font-size: 13px; color: #18182A; line-height: 1.65; }
+  .d1 .we-icard-val { font-size: 13px; color: #18182A; line-height: 1.65; }
 
-  .we-icard.accent-purple { border-left-color: #8B6FBE; }
-  .we-icard.accent-purple .we-icard-lbl { color: #8B6FBE; }
+  .d1 .we-icard.accent-purple { border-left-color: #8B6FBE; }
+  .d1 .we-icard.accent-purple .we-icard-lbl { color: #8B6FBE; }
 
-  .we-funfact {
+  .d1 .we-funfact {
     background: #0C0C1A;
     border-radius: 12px; padding: 20px 22px;
     margin-bottom: 12px; position: relative; overflow: hidden;
   }
-  .we-funfact::before {
+  .d1 .we-funfact::before {
     content: '"';
     position: absolute; top: -8px; left: 12px;
     font-family: 'Cormorant Garamond', serif;
     font-size: 72px; color: rgba(196,163,90,0.12); line-height: 1;
     pointer-events: none;
   }
-  .we-funfact-lbl {
+  .d1 .we-funfact-lbl {
     font-size: 9px; font-weight: 700; text-transform: uppercase;
     letter-spacing: 0.12em; color: #C4A35A; margin-bottom: 6px;
     display: flex; align-items: center; gap: 6px; position: relative;
   }
-  .we-funfact-val {
+  .d1 .we-funfact-val {
     font-family: 'Cormorant Garamond', serif;
     font-size: 16px; font-style: italic; color: #D8D4CC;
     line-height: 1.65; position: relative;
   }
 
-  .we-divider { height: 1px; background: rgba(196,163,90,0.12); margin: 20px 0; }
+  .d1 .we-divider { height: 1px; background: rgba(196,163,90,0.12); margin: 20px 0; }
 
-  .we-email-closing {
-    text-align: center; padding: 0 10px;
-  }
-  .we-closing-title {
+  .d1 .we-email-closing { text-align: center; padding: 0 10px; }
+  .d1 .we-closing-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 19px; font-weight: 600; color: #18182A;
     margin-bottom: 8px;
   }
-  .we-closing-sub {
-    font-size: 12px; color: #8A8799; line-height: 1.75;
+  .d1 .we-closing-sub { font-size: 12px; color: #8A8799; line-height: 1.75; }
+
+  .d1 .we-email-footer { background: #0C0C1A; padding: 24px 34px; text-align: center; }
+  .d1 .we-footer-line { width: 36px; height: 1px; background: rgba(196,163,90,0.18); margin: 0 auto 14px; }
+  .d1 .we-footer-txt { font-size: 10px; color: #C4A35A; line-height: 1.7; font-family: 'Sora', sans-serif; }
+`;
+
+/* ═══════════════════════════════════════════════════════
+   DESIGN 2 — Emerald Dusk (deep charcoal + forest green)
+═══════════════════════════════════════════════════════ */
+const STYLES_D2 = `
+  .d2 .we-email-hero {
+    background: #0C1410;
+    padding: 36px 36px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .d2 .we-email-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 75% 60% at 20% 75%, rgba(74,155,127,0.09) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 50% at 80% 20%, rgba(45,122,94,0.07) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .d2 .we-email-eyebrow {
+    position: relative;
+    display: flex; align-items: center; gap: 8px;
+    width: fit-content; margin: 0 auto 22px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 9px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    color: #4A9B7F;
+    border: 1px solid rgba(74,155,127,0.28);
+    padding: 5px 14px; border-radius: 20px;
+    background: rgba(74,155,127,0.06);
+  }
+  .d2 .we-email-eyebrow-star { font-size: 8px; opacity: 0.75; }
+  .d2 .we-photo-ring {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: conic-gradient(#4A9B7F 0%, #2D7A5E 35%, #6BBFA0 65%, #4A9B7F 100%);
+    padding: 2.5px;
+    display: inline-block;
+    position: relative;
+  }
+  .d2 .we-photo-inner {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #101C16;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .d2 .we-photo-inner img { width:100%; height:100%; object-fit:cover; }
+  .d2 .we-photo-initials {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 600; color: #4A9B7F;
+  }
+  .d2 .we-email-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px; font-weight: 600; color: #E2EDE8;
+    margin-top: 16px; margin-bottom: 6px;
+    line-height: 1.15; position: relative;
+  }
+  .d2 .we-email-desig {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px; font-weight: 600; color: #4A9B7F;
+    letter-spacing: 0.12em; margin-bottom: 10px;
+    position: relative; text-transform: uppercase;
+  }
+  .d2 .we-email-team {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px; color: rgba(74,155,127,0.65);
+    border: 1px solid rgba(74,155,127,0.18);
+    background: rgba(74,155,127,0.07);
+    padding: 4px 14px; border-radius: 20px;
+    margin-bottom: 30px; position: relative;
+    letter-spacing: 0.05em;
+  }
+  .d2 .we-wave {
+    display: block; width: 100%;
+    line-height: 0; position: relative; margin-bottom: -1px;
   }
 
-  /* email footer */
-  .we-email-footer {
-    background: #0C0C1A;
-    padding: 24px 34px; text-align: center;
+  /* email body */
+  .d2 .we-email-body { background: #F2F7F4; padding: 30px 34px 24px; }
+  .d2 .we-email-greeting {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 600; color: #0F1E16;
+    margin-bottom: 10px; line-height: 1.3;
   }
-  .we-footer-cta {
+  .d2 .we-email-intro {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px; color: #536B5C; line-height: 1.85;
+    margin-bottom: 22px; font-weight: 300;
+  }
+  .d2 .we-email-intro strong { color: #0F1E16; font-weight: 600; }
+
+  .d2 .we-chips {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px; margin-bottom: 20px;
+  }
+  .d2 .we-chip {
+    background: white;
+    border-radius: 12px; padding: 12px 10px;
+    text-align: center;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    border-top: 2px solid rgba(74,155,127,0.3);
+  }
+  .d2 .we-chip-lbl {
+    font-family: 'Outfit', sans-serif;
+    font-size: 8px; text-transform: uppercase; letter-spacing: 0.12em; color: #94AFA0; margin-bottom: 5px;
+  }
+  .d2 .we-chip-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-weight: 600; color: #0F1E16; line-height: 1.3;
+  }
+
+  .d2 .we-icard {
+    background: white;
+    border-radius: 12px; padding: 16px 18px;
+    margin-bottom: 12px;
+    border-left: 2.5px solid #4A9B7F;
+    box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+  }
+  .d2 .we-icard.accent-teal { border-left-color: #2D7A5E; }
+  .d2 .we-icard.accent-sage { border-left-color: rgba(74,155,127,0.4); }
+  .d2 .we-icard-lbl {
+    font-family: 'Outfit', sans-serif;
+    font-size: 8px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.14em; color: #4A9B7F; margin-bottom: 5px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .d2 .we-icard.accent-teal .we-icard-lbl { color: #2D7A5E; }
+  .d2 .we-icard.accent-sage .we-icard-lbl { color: rgba(74,155,127,0.7); }
+  .d2 .we-icard-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px; color: #0F1E16; line-height: 1.65; font-weight: 300;
+  }
+
+  .d2 .we-funfact {
+    background: #0C1410;
+    border-radius: 12px; padding: 20px 22px;
+    margin-bottom: 12px; position: relative; overflow: hidden;
+  }
+  .d2 .we-funfact::before {
+    content: '"';
+    position: absolute; top: -8px; left: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px; color: rgba(74,155,127,0.12); line-height: 1;
+    pointer-events: none;
+  }
+  .d2 .we-funfact-lbl {
+    font-family: 'Outfit', sans-serif;
+    font-size: 8px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.14em; color: #4A9B7F; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px; position: relative;
+  }
+  .d2 .we-funfact-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; font-style: italic; color: rgba(210,235,222,0.85);
+    line-height: 1.65; position: relative;
+  }
+
+  .d2 .we-divider { height: 1px; background: rgba(74,155,127,0.12); margin: 20px 0; }
+
+  .d2 .we-email-closing { text-align: center; padding: 0 10px; }
+  .d2 .we-closing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px; font-weight: 600; color: #0F1E16; margin-bottom: 8px;
+  }
+  .d2 .we-closing-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px; color: #7A9E8A; line-height: 1.75; font-weight: 300;
+  }
+
+  .d2 .we-email-footer { background: #0C1410; padding: 24px 34px; text-align: center; }
+  .d2 .we-footer-line { width: 36px; height: 1px; background: rgba(74,155,127,0.2); margin: 0 auto 14px; }
+  .d2 .we-footer-txt {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px; color: rgba(74,155,127,0.5); line-height: 1.7;
+  }
+  .d2 .we-footer-txt span { color: #4A9B7F; }
+`;
+
+/* ═══════════════════════════════════════════════════════
+   DESIGN 3 — Deep Navy Ember (navy + coral/ember tones)
+═══════════════════════════════════════════════════════ */
+const STYLES_D3 = `
+  .d3 .we-email-hero {
+    background: #0B0E1A;
+    padding: 36px 36px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .d3 .we-email-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 75% 55% at 20% 80%, rgba(228,110,80,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 45% at 80% 15%, rgba(80,120,220,0.07) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .d3 .we-email-eyebrow {
+    position: relative;
+    display: flex; align-items: center; gap: 8px;
+    width: fit-content; margin: 0 auto 22px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 9px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+    color: #E46E50;
+    border: 1px solid rgba(228,110,80,0.28);
+    padding: 5px 14px; border-radius: 4px;
+    background: rgba(228,110,80,0.06);
+  }
+  .d3 .we-email-eyebrow-star { font-size: 8px; opacity: 0.7; }
+  .d3 .we-photo-ring {
+    width: 110px; height: 110px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #E46E50 0%, #5078DC 50%, #E46E50 100%);
+    padding: 2.5px;
     display: inline-block;
-    background: linear-gradient(110deg, #A8893A, #C4A35A, #E4C97A);
-    color: #07070F;
-    font-size: 12px; font-weight: 600;
-    padding: 11px 26px; border-radius: 30px;
-    text-decoration: none; letter-spacing: 0.05em; margin-bottom: 18px;
-    font-family: 'Sora', sans-serif;
-    cursor: pointer;
+    position: relative;
   }
-  .we-footer-line {
-    width: 36px; height: 1px;
-    background: rgba(196,163,90,0.18);
-    margin: 0 auto 14px;
+  .d3 .we-photo-inner {
+    width: 100%; height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #14182A;
+    display: flex; align-items: center; justify-content: center;
   }
-  .we-footer-txt {
-    font-size: 10px; color: #C4A35A; line-height: 1.7;
-    font-family: 'Sora', sans-serif;
+  .d3 .we-photo-inner img { width:100%; height:100%; object-fit:cover; }
+  .d3 .we-photo-initials {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 600; color: #E46E50;
   }
+  .d3 .we-email-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px; font-weight: 600; color: #EBE8F0;
+    margin-top: 16px; margin-bottom: 6px;
+    line-height: 1.15; position: relative;
+  }
+  .d3 .we-email-desig {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px; font-weight: 600; color: #E46E50;
+    letter-spacing: 0.12em; margin-bottom: 10px;
+    position: relative; text-transform: uppercase;
+  }
+  .d3 .we-email-team {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px; color: rgba(228,110,80,0.6);
+    border: 1px solid rgba(228,110,80,0.18);
+    background: rgba(228,110,80,0.06);
+    padding: 4px 14px; border-radius: 4px;
+    margin-bottom: 30px; position: relative;
+    letter-spacing: 0.05em;
+  }
+  .d3 .we-wave {
+    display: block; width: 100%;
+    line-height: 0; position: relative; margin-bottom: -1px;
+  }
+
+  /* email body */
+  .d3 .we-email-body { background: #F5F3F0; padding: 30px 34px 24px; }
+  .d3 .we-email-greeting {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 23px; font-weight: 600; color: #1A1620;
+    margin-bottom: 10px; line-height: 1.3;
+  }
+  .d3 .we-email-intro {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px; color: #5E5870; line-height: 1.85;
+    margin-bottom: 22px; font-weight: 300;
+  }
+  .d3 .we-email-intro strong { color: #1A1620; font-weight: 600; }
+
+  .d3 .we-chips {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px; margin-bottom: 20px;
+  }
+  .d3 .we-chip {
+    background: white;
+    border-radius: 10px; padding: 12px 10px;
+    text-align: center;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    border-top: 2px solid rgba(228,110,80,0.25);
+  }
+  .d3 .we-chip-lbl {
+    font-family: 'Outfit', sans-serif;
+    font-size: 8px; text-transform: uppercase; letter-spacing: 0.12em; color: #A8A4B8; margin-bottom: 5px;
+  }
+  .d3 .we-chip-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-weight: 600; color: #1A1620; line-height: 1.3;
+  }
+
+  .d3 .we-icard {
+    background: white;
+    border-radius: 10px; padding: 16px 18px;
+    margin-bottom: 12px;
+    border-left: 2.5px solid #E46E50;
+    box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+  }
+  .d3 .we-icard.accent-blue { border-left-color: #5078DC; }
+  .d3 .we-icard.accent-muted { border-left-color: rgba(228,110,80,0.35); }
+  .d3 .we-icard-lbl {
+    font-family: 'Outfit', sans-serif;
+    font-size: 8px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.14em; color: #E46E50; margin-bottom: 5px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .d3 .we-icard.accent-blue .we-icard-lbl { color: #5078DC; }
+  .d3 .we-icard.accent-muted .we-icard-lbl { color: rgba(228,110,80,0.6); }
+  .d3 .we-icard-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px; color: #1A1620; line-height: 1.65; font-weight: 300;
+  }
+
+  .d3 .we-funfact {
+    background: #0B0E1A;
+    border-radius: 10px; padding: 20px 22px;
+    margin-bottom: 12px; position: relative; overflow: hidden;
+  }
+  .d3 .we-funfact::before {
+    content: '"';
+    position: absolute; top: -8px; left: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px; color: rgba(228,110,80,0.1); line-height: 1;
+    pointer-events: none;
+  }
+  .d3 .we-funfact-lbl {
+    font-family: 'Outfit', sans-serif;
+    font-size: 8px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.14em; color: #E46E50; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px; position: relative;
+  }
+  .d3 .we-funfact-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; font-style: italic; color: rgba(220,215,230,0.85);
+    line-height: 1.65; position: relative;
+  }
+
+  .d3 .we-divider { height: 1px; background: rgba(228,110,80,0.1); margin: 20px 0; }
+
+  .d3 .we-email-closing { text-align: center; padding: 0 10px; }
+  .d3 .we-closing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 600; color: #1A1620; margin-bottom: 8px;
+  }
+  .d3 .we-closing-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px; color: #8C88A0; line-height: 1.75; font-weight: 300;
+  }
+
+  .d3 .we-email-footer { background: #0B0E1A; padding: 24px 34px; text-align: center; }
+  .d3 .we-footer-line { width: 36px; height: 1px; background: rgba(228,110,80,0.2); margin: 0 auto 14px; }
+  .d3 .we-footer-txt { font-family: 'Outfit', sans-serif; font-size: 10px; color: rgba(228,110,80,0.5); line-height: 1.7; }
+  .d3 .we-footer-txt span { color: #E46E50; }
 `;
 
 const ICON_USER = (
@@ -472,6 +847,235 @@ function formatDate(val) {
   return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 }
 
+/* ── Design 1 Preview ── */
+function EmailDesign1({ photo, d, nm, desig, team, hobbies, lf, ff, city, sp, initials, firstName }) {
+  return (
+    <div className="we-email d1">
+      <div className="we-email-hero">
+        <div className="we-email-eyebrow">
+          <span className="we-email-eyebrow-star">✦</span>
+          New Team Member
+          <span className="we-email-eyebrow-star">✦</span>
+        </div>
+        <div className="we-photo-ring">
+          <div className="we-photo-inner">
+            {photo ? <img src={photo} alt={nm} /> : <span className="we-photo-initials">{initials}</span>}
+          </div>
+        </div>
+        <div className="we-email-name">{nm}</div>
+        <div className="we-email-desig">{desig}</div>
+        <div className="we-email-team">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          {team}
+        </div>
+        <svg viewBox="0 0 540 44" className="we-wave" preserveAspectRatio="none" style={{ height: "44px" }}>
+          <path d="M0 0 C90 44 180 0 270 22 C360 44 450 10 540 28 L540 44 L0 44 Z" fill="#F4F1EA" />
+        </svg>
+      </div>
+      <div className="we-email-body">
+        <div className="we-email-greeting">Hey team, say hello 👋</div>
+        <div className="we-email-intro">
+          We're over the moon to welcome <strong>{nm}</strong> to the <strong>{team}</strong> team!
+          Joining us from {city}, {firstName} brings incredible energy and expertise.
+          Get ready — something amazing is about to happen.
+        </div>
+        <div className="we-chips">
+          <div className="we-chip"><div className="we-chip-lbl">Start Date</div><div className="we-chip-val">{formatDate(d.startDate)}</div></div>
+          <div className="we-chip"><div className="we-chip-lbl">Based in</div><div className="we-chip-val">{city}</div></div>
+          <div className="we-chip"><div className="we-chip-lbl">Role</div><div className="we-chip-val">{desig}</div></div>
+        </div>
+        <div className="we-icard">
+          <div className="we-icard-lbl">{ICON_HOBBY} Hobbies & Interests</div>
+          <div className="we-icard-val">{hobbies}</div>
+        </div>
+        <div className="we-icard accent-purple">
+          <div className="we-icard-lbl">{ICON_STAR} Most Excited About</div>
+          <div className="we-icard-val">{lf}</div>
+        </div>
+        <div className="we-icard" style={{ borderLeftColor: "#6BA3C4" }}>
+          <div className="we-icard-lbl" style={{ color: "#6BA3C4" }}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Hidden Superpower
+          </div>
+          <div className="we-icard-val">{sp}</div>
+        </div>
+        <div className="we-funfact">
+          <div className="we-funfact-lbl">{ICON_ZAP} Fun Fact</div>
+          <div className="we-funfact-val">{ff}</div>
+        </div>
+        <div className="we-divider" />
+        <div className="we-email-closing">
+          <div className="we-closing-title">Let's give {firstName} a legendary welcome! 🎉</div>
+          <div className="we-closing-sub">
+            Drop them a message on Teams, grab a virtual coffee,<br />
+            or just share a meme. The more the merrier! Welcome aboard! 🚀
+          </div>
+        </div>
+      </div>
+      <div className="we-email-footer">
+        <div className="we-footer-line" />
+        <div className="we-footer-txt">
+          Sent with ❤️ from the Tech Team<br />
+          <span style={{ color: "#C4A35A" }}>Godrej Capital</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Design 2 Preview ── */
+function EmailDesign2({ photo, d, nm, desig, team, hobbies, lf, ff, city, sp, initials, firstName }) {
+  return (
+    <div className="we-email d2">
+      <div className="we-email-hero">
+        <div className="we-email-eyebrow">
+          <span className="we-email-eyebrow-star">✿</span>
+          New Team Member
+          <span className="we-email-eyebrow-star">✿</span>
+        </div>
+        <div className="we-photo-ring">
+          <div className="we-photo-inner">
+            {photo ? <img src={photo} alt={nm} /> : <span className="we-photo-initials">{initials}</span>}
+          </div>
+        </div>
+        <div className="we-email-name">{nm}</div>
+        <div className="we-email-desig">{desig}</div>
+        <div className="we-email-team">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          {team}
+        </div>
+        <svg viewBox="0 0 540 44" className="we-wave" preserveAspectRatio="none" style={{ height: "44px" }}>
+          <path d="M0 0 C90 44 180 0 270 22 C360 44 450 10 540 28 L540 44 L0 44 Z" fill="#F2F7F4" />
+        </svg>
+      </div>
+      <div className="we-email-body">
+        <div className="we-email-greeting">The team just got better 🌿</div>
+        <div className="we-email-intro">
+          We're thrilled to welcome <strong>{nm}</strong> into the <strong>{team}</strong> team! {firstName} is bringing new energy, new ideas, and a whole new
+          chapter for all of us. Growth starts here.
+        </div>
+        <div className="we-chips">
+          <div className="we-chip"><div className="we-chip-lbl">Start Date</div><div className="we-chip-val">{formatDate(d.startDate)}</div></div>
+          <div className="we-chip"><div className="we-chip-lbl">Based in</div><div className="we-chip-val">{city}</div></div>
+          <div className="we-chip"><div className="we-chip-lbl">Role</div><div className="we-chip-val">{desig}</div></div>
+        </div>
+        <div className="we-icard">
+          <div className="we-icard-lbl">{ICON_HOBBY} Hobbies & Interests</div>
+          <div className="we-icard-val">{hobbies}</div>
+        </div>
+        <div className="we-icard accent-teal">
+          <div className="we-icard-lbl">{ICON_STAR} Most Excited About</div>
+          <div className="we-icard-val">{lf}</div>
+        </div>
+        <div className="we-icard accent-sage">
+          <div className="we-icard-lbl">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Hidden Superpower
+          </div>
+          <div className="we-icard-val">{sp}</div>
+        </div>
+        <div className="we-funfact">
+          <div className="we-funfact-lbl">{ICON_ZAP} Fun Fact</div>
+          <div className="we-funfact-val">{ff}</div>
+        </div>
+        <div className="we-divider" />
+        <div className="we-email-closing">
+          <div className="we-closing-title">Grow together — welcome {firstName}! 🌱</div>
+          <div className="we-closing-sub">
+            Ping them on Teams, share a playlist, or just send a warm hello —<br />
+            the best roots grow from the warmest welcomes.
+          </div>
+        </div>
+      </div>
+      <div className="we-email-footer">
+        <div className="we-footer-line" />
+        <div className="we-footer-txt">
+          Sent with ❤️ from the Tech Team<br />
+          <span>Godrej Capital</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Design 3 Preview ── */
+function EmailDesign3({ photo, d, nm, desig, team, hobbies, lf, ff, city, sp, initials, firstName }) {
+  return (
+    <div className="we-email d3">
+      <div className="we-email-hero">
+        <div className="we-email-eyebrow">
+          <span className="we-email-eyebrow-star">◆</span>
+          Fresh Aboard
+          <span className="we-email-eyebrow-star">◆</span>
+        </div>
+        <div className="we-photo-ring">
+          <div className="we-photo-inner">
+            {photo ? <img src={photo} alt={nm} /> : <span className="we-photo-initials">{initials}</span>}
+          </div>
+        </div>
+        <div className="we-email-name">{nm}</div>
+        <div className="we-email-desig">{desig}</div>
+        <div className="we-email-team">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          {team}
+        </div>
+        <svg viewBox="0 0 540 44" className="we-wave" preserveAspectRatio="none" style={{ height: "44px" }}>
+          <path d="M0 0 C90 44 180 0 270 22 C360 44 450 10 540 28 L540 44 L0 44 Z" fill="#F5F3F0" />
+        </svg>
+      </div>
+      <div className="we-email-body">
+        <div className="we-email-greeting">Someone exciting just walked in 🔥</div>
+        <div className="we-email-intro">
+          The <strong>{team}</strong> team just got a whole lot stronger — <strong>{nm}</strong> is here! {firstName} is already sparking ideas before day one.
+          This is the kind of energy we've been waiting for.
+        </div>
+        <div className="we-chips">
+          <div className="we-chip"><div className="we-chip-lbl">Start Date</div><div className="we-chip-val">{formatDate(d.startDate)}</div></div>
+          <div className="we-chip"><div className="we-chip-lbl">Based in</div><div className="we-chip-val">{city}</div></div>
+          <div className="we-chip"><div className="we-chip-lbl">Role</div><div className="we-chip-val">{desig}</div></div>
+        </div>
+        <div className="we-icard">
+          <div className="we-icard-lbl">{ICON_HOBBY} Hobbies & Interests</div>
+          <div className="we-icard-val">{hobbies}</div>
+        </div>
+        <div className="we-icard accent-blue">
+          <div className="we-icard-lbl">{ICON_STAR} Most Excited About</div>
+          <div className="we-icard-val">{lf}</div>
+        </div>
+        <div className="we-icard accent-muted">
+          <div className="we-icard-lbl">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Hidden Superpower
+          </div>
+          <div className="we-icard-val">{sp}</div>
+        </div>
+        <div className="we-funfact">
+          <div className="we-funfact-lbl">{ICON_ZAP} Fun Fact</div>
+          <div className="we-funfact-val">{ff}</div>
+        </div>
+        <div className="we-divider" />
+        <div className="we-email-closing">
+          <div className="we-closing-title">Roll out the warmest welcome for {firstName}! 🚀</div>
+          <div className="we-closing-sub">
+            Ping them on Teams, plan a lunch, or slide into their DMs —<br />
+            the best teams start with the best hellos. Let's go! 🎯
+          </div>
+        </div>
+      </div>
+      <div className="we-email-footer">
+        <div className="we-footer-line" />
+        <div className="we-footer-txt">
+          Sent with ❤️ from the Tech Team<br />
+          <span>Godrej Capital</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   MAIN COMPONENT
+═══════════════════════════════════════════════════════ */
 export default function WelcomeEmailer() {
   const [d, setD] = useState({
     name: "", designation: "", team: "",
@@ -482,6 +1086,7 @@ export default function WelcomeEmailer() {
   const [drag, setDrag] = useState(false);
   const [sent, setSent] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [design, setDesign] = useState("1");
   const fileRef = useRef(null);
   const emailRef = useRef(null);
 
@@ -494,23 +1099,25 @@ export default function WelcomeEmailer() {
     r.readAsDataURL(file);
   };
 
-  const nm   = d.name         || "Your Name";
-  const desig = d.designation || "Your Designation";
-  const team  = d.team        || "Application Team";
-  const hobbies = d.hobbies   || "Rock climbing, jazz piano, building retro computers";
-  const lf    = d.lookForward || "Building products that reach millions of people every single day";
-  const ff    = d.funFact     || "Once fixed a critical production bug while on a ski slope — and stuck the landing";
-  const city  = d.city        || "Mumbai, India";
-  const sp    = d.superpower  || "Turning caffeine into clean code at 2am";
-  const initials = getInitials(nm);
+  const nm      = d.name         || "Your Name";
+  const desig   = d.designation  || "Your Designation";
+  const team    = d.team         || "Application Team";
+  const hobbies = d.hobbies      || "Rock climbing, jazz piano, building retro computers";
+  const lf      = d.lookForward  || "Building products that reach millions of people every single day";
+  const ff      = d.funFact      || "Once fixed a critical production bug while on a ski slope — and stuck the landing";
+  const city    = d.city         || "Mumbai, India";
+  const sp      = d.superpower   || "Turning caffeine into clean code at 2am";
+  const initials  = getInitials(nm);
   const firstName = nm.split(" ")[0];
+
+  const previewProps = { photo, d, nm, desig, team, hobbies, lf, ff, city, sp, initials, firstName };
 
   const handleSend = async () => {
     if (downloading || !emailRef.current) return;
     setDownloading(true);
     try {
-      const node = emailRef.current;
-      const rect = node.getBoundingClientRect();
+      const node   = emailRef.current;
+      const rect   = node.getBoundingClientRect();
       const width  = Math.round(rect.width);
       const height = node.scrollHeight;
 
@@ -542,7 +1149,7 @@ export default function WelcomeEmailer() {
 
   return (
     <>
-      <style>{STYLES}</style>
+      <style>{BASE_STYLES + STYLES_D1 + STYLES_D2 + STYLES_D3}</style>
       <div className="we-root">
 
         {/* TOP BAR */}
@@ -561,7 +1168,21 @@ export default function WelcomeEmailer() {
           {/* ── FORM PANEL ── */}
           <div className="we-form-panel">
             <div className="we-form-title">New Joinee Details</div>
-            <div className="we-form-sub">The perfect welcome to the perfect team player. </div>
+            <div className="we-form-sub">The perfect welcome to the perfect team player.</div>
+
+            {/* Design Selector */}
+            <div className="we-design-selector-wrap">
+              <label className="we-design-selector-label">Choose a Design</label>
+              <select
+                className="we-design-select"
+                value={design}
+                onChange={e => setDesign(e.target.value)}
+              >
+                <option value="1">Design 1 — Classic Gold</option>
+                <option value="2">Design 2 — Emerald Dusk</option>
+                <option value="3">Design 3 — Deep Navy Ember</option>
+              </select>
+            </div>
 
             {/* Photo */}
             <div
@@ -661,107 +1282,10 @@ export default function WelcomeEmailer() {
               Email Preview: Updates as you type
             </div>
 
-            <div className="we-email" ref={emailRef}>
-              {/* Browser chrome */}
-
-              {/* HERO */}
-              <div className="we-email-hero">
-                <div className="we-email-eyebrow">
-                  <span className="we-email-eyebrow-star">✦</span>
-                  New Team Member
-                  <span className="we-email-eyebrow-star">✦</span>
-                </div>
-
-                <div className="we-photo-ring">
-                  <div className="we-photo-inner">
-                    {photo
-                      ? <img src={photo} alt={nm} />
-                      : <span className="we-photo-initials">{initials}</span>
-                    }
-                  </div>
-                </div>
-
-                <div className="we-email-name">{nm}</div>
-                <div className="we-email-desig">{desig}</div>
-                <div className="we-email-team">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                  {team}
-                </div>
-
-                {/* wave */}
-                <svg viewBox="0 0 540 44" className="we-wave" preserveAspectRatio="none" style={{ height: "44px" }}>
-                  <path d="M0 0 C90 44 180 0 270 22 C360 44 450 10 540 28 L540 44 L0 44 Z" fill="#F4F1EA" />
-                </svg>
-              </div>
-
-              {/* BODY */}
-              <div className="we-email-body">
-                <div className="we-email-greeting">Hey team, say hello 👋</div>
-                <div className="we-email-intro">
-                  We're over the moon to welcome <strong>{nm}</strong> to the <strong>{team}</strong> team!
-                  Joining us from {city}, {firstName} brings incredible energy and expertise.
-                  Get ready — something amazing is about to happen.
-                </div>
-
-                {/* chips */}
-                <div className="we-chips">
-                  <div className="we-chip">
-                    <div className="we-chip-lbl">Start Date</div>
-                    <div className="we-chip-val">{formatDate(d.startDate)}</div>
-                  </div>
-                  <div className="we-chip">
-                    <div className="we-chip-lbl">Based in</div>
-                    <div className="we-chip-val">{city}</div>
-                  </div>
-                  <div className="we-chip">
-                    <div className="we-chip-lbl">Role</div>
-                    <div className="we-chip-val">{desig}</div>
-                  </div>
-                </div>
-
-                {/* info cards */}
-                <div className="we-icard">
-                  <div className="we-icard-lbl">{ICON_HOBBY} Hobbies & Interests</div>
-                  <div className="we-icard-val">{hobbies}</div>
-                </div>
-
-                <div className="we-icard accent-purple">
-                  <div className="we-icard-lbl">{ICON_STAR} Most Excited About</div>
-                  <div className="we-icard-val">{lf}</div>
-                </div>
-
-                <div className="we-icard" style={{ borderLeftColor: "#6BA3C4" }}>
-                  <div className="we-icard-lbl" style={{ color: "#6BA3C4" }}>
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                    Hidden Superpower
-                  </div>
-                  <div className="we-icard-val">{sp}</div>
-                </div>
-
-                <div className="we-funfact">
-                  <div className="we-funfact-lbl">{ICON_ZAP} Fun Fact</div>
-                  <div className="we-funfact-val">{ff}</div>
-                </div>
-
-                <div className="we-divider" />
-
-                <div className="we-email-closing">
-                  <div className="we-closing-title">Let's give {firstName} a legendary welcome! 🎉</div>
-                  <div className="we-closing-sub">
-                    Drop them a message on Teams, grab a virtual coffee,<br />
-                    or just share a meme. The more the merrier ! welcome aboard! 🚀
-                  </div>
-                </div>
-              </div>
-
-              {/* FOOTER */}
-              <div className="we-email-footer">
-                <div className="we-footer-line" />
-                <div className="we-footer-txt">
-                  Sent with ❤️ from the Tech Team<br />
-                  <span style={{ color: "#C4A35A" }}>Godrej Capital</span>
-                </div>
-              </div>
+            <div ref={emailRef}>
+              {design === "1" && <EmailDesign1 {...previewProps} />}
+              {design === "2" && <EmailDesign2 {...previewProps} />}
+              {design === "3" && <EmailDesign3 {...previewProps} />}
             </div>
           </div>
 
